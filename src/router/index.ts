@@ -6,6 +6,11 @@ const routes: Array<RouteRecordRaw> = [
 		name: 'home',
 		component: () => import('../views/Home.vue'),
 	},
+	{
+		path: '/favorites',
+		name: 'favorites',
+		component: () => import('../views/Favorites.vue'),
+	},
 ]
 
 const router = createRouter({
