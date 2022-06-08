@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Header from './components/Header.vue'
+import Searcher from './components/Searcher.vue'
+</script>
 
 <template lang="pug">
-h1 Pokedex
+Header
+router-view
 </template>
 
 <style lang="postcss">
