@@ -22,7 +22,6 @@ export default defineComponent({
 
 		const setActive = () => {
 			isActive.value = !isActive.value
-			console.log(isActive.value)
 		}
 
 		return { isActive, setActive }

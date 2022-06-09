@@ -43,6 +43,7 @@ section.searcher
 	@apply p-1;
 	@apply flex;
 	@apply items-center;
+	@apply text-dark;
 }
 
 .text > input {
