@@ -51,6 +51,7 @@ export const getPokemon = async (url: string) => {
 
 	return {
 		id: pokemonsData.id,
+		name: pokemonsData.forms[0].name,
 		type: { types, weakness },
 		img: pokemonsData.sprites.other['official-artwork'].front_default,
 		height: pokemonsData.height,
