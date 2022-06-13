@@ -5,6 +5,7 @@ export interface pokemonRef {
 
 export interface pokemonData {
 	id: number
+	name: string
 	type: typeData
 	img: string
 	height: number
@@ -14,8 +15,4 @@ export interface pokemonData {
 export interface typeData {
 	types: string[]
 	weakness: string[]
-}
-
-export interface pokemonsData {
-	[pokemons: string]: pokemonData
 }
