@@ -1,14 +1,20 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useStore } from '../store'
 
 export default defineComponent({
-	props: ['setPokemonsData', 'setPokemonsIndex'],
+	props: ['setPokemonsData'],
 	setup(props) {
-		const { setPokemonsData, setPokemonsIndex } = props
+		const { setPokemonsData } = props
+
+		const store = useStore()
+
+		const pokemonsData = computed(() => {
+			return store.getters[setPokemonsData]
+		})
 
 		return {
-			setPokemonsData,
-			setPokemonsIndex,
+			pokemonsData,
 		}
 	},
 })
@@ -16,13 +22,13 @@ export default defineComponent({
 
 <template lang="pug">
 .container
-  .card(v-for="pokemon in setPokemonsIndex" :key="pokemon")
-    img.pokemon-img(:src="setPokemonsData[pokemon].img")
-    p.pokemon-id N.°{{('000' + setPokemonsData[pokemon].id).substr(-3)}}
+  .card(v-for="pokemon in pokemonsData" :key="pokemon.name")
+    img.pokemon-img(:src="pokemon.img")
+    p.pokemon-id N.°{{('000' + pokemon.id).substr(-3)}}
     strong
-      .pokemon-name {{pokemon.charAt(0).toUpperCase() + pokemon.slice(1)}}
+      .pokemon-name {{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}}
     .types
-      p(v-for="type in setPokemonsData[pokemon].type.types" :key="type" :class='type') {{type.charAt(0).toUpperCase() + type.slice(1)}}
+      p(v-for="type in pokemon.type.types" :key="type" :class='type') {{type.charAt(0).toUpperCase() + type.slice(1)}}
 </template>
 
 <style lang="postcss" scoped>
