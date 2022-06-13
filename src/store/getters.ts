@@ -1,16 +1,17 @@
 import { GetterTree } from 'vuex'
 import { State } from './state'
+import { pokemonData } from '../types/pokemon'
 
 export type Getters = {
-	pokemon(state: State): any
-	pokemonIndex(state: State): string[]
+	pokemon(state: State): pokemonData[]
+	nextUrl(state: State): string
 }
 
 export const getters: GetterTree<State, State> & Getters = {
 	pokemon: (state) => {
 		return state.pokemons
 	},
-	pokemonIndex: (state) => {
-		return state.pokemonIndex
+	nextUrl: (state) => {
+		return state.nextUrl
 	},
 }

@@ -1,13 +1,11 @@
-import { pokemonsData } from '../types/pokemon'
+import { pokemonData } from '../types/pokemon'
 
 export type State = {
-	pokemonIndex: string[]
-	pokemons: pokemonsData
-	favoritePokemons: pokemonsData
+	pokemons: pokemonData[]
+	nextUrl: string
 }
 
 export const state: State = {
-	pokemonIndex: [],
-	pokemons: {},
-	favoritePokemons: {},
+	pokemons: [],
+	nextUrl: '',
 }
