@@ -1,14 +1,13 @@
 import axios from 'axios'
-import { pokemonsData } from '../types/pokemon'
+import { pokemonData } from '../types/pokemon'
+import { useStore } from '../store'
+import { ActionTypes } from '../store/actions'
 
 const BASE_URL = 'https://pokeapi.co/api/v2'
 
 export const getPokemons = async (
 	url: string = `${BASE_URL}/pokemon?limit=12&offset=0`
 ) => {
-	const pokeData: pokemonsData = {}
-	const pokemonIndex: string[] = []
-
 	const config = {
 		method: 'get',
 		url,
@@ -17,13 +16,15 @@ export const getPokemons = async (
 
 	const { data: pokemonsList } = await axios(config)
 
-	pokemonsList.results.forEach(async (element: any) => {
-		pokemonIndex.push(element.name)
-		const pokemonData = await getPokemon(element.url)
-		pokeData[element.name] = pokemonData
-	})
+	const store = useStore()
+	store.dispatch(ActionTypes.SetNextUrl, pokemonsList.next)
 
-	return { pokeData, pokemonIndex }
+	const pokeData: pokemonData[] = await Promise.all(
+		pokemonsList.results.map((element: any) => {
+			return getPokemon(element.url)
+		})
+	)
+	return pokeData
 }
 
 export const getPokemon = async (url: string) => {
@@ -37,14 +38,16 @@ export const getPokemon = async (url: string) => {
 
 	const { data: pokemonsData } = await axios(config)
 
-	pokemonsData.types.forEach(async (element: any) => {
-		types.push(element.type.name)
-		const dataType = await getTypes(element.type.url)
+	await Promise.all(
+		pokemonsData.types.map(async (element: any) => {
+			const dataType = await getTypes(element.type.url)
+			types.push(element.type.name)
 
-		dataType.forEach((element: any) => {
-			if (weakness.indexOf(element.name) === -1) weakness.push(element.name)
+			dataType.forEach((element: any) => {
+				if (weakness.indexOf(element.name) === -1) weakness.push(element.name)
+			})
 		})
-	})
+	)
 
 	return {
 		id: pokemonsData.id,
