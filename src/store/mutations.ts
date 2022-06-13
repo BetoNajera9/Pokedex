@@ -1,18 +1,27 @@
 import { MutationTree } from 'vuex'
+import { pokemonData } from '../types/pokemon'
+import { State } from './state'
 
 export enum MutationTypes {
 	SetPokemonsData = 'SET_POKEMONS_DATA',
+	SetNextUrl = 'SET_NEXT_URL',
 }
 
 export type Mutations = {
-	[MutationTypes.SetPokemonsData](state: any, data: any): void
+	[MutationTypes.SetPokemonsData](state: State, data: pokemonData[]): void
+	[MutationTypes.SetNextUrl](state: State, url: string): void
 }
 
-export const mutations: MutationTree<any> & Mutations = {
+export const mutations: MutationTree<State> & Mutations = {
 	[MutationTypes.SetPokemonsData](state, data) {
-		if (!state.pokemons[data.pokemonIndex[0]]) {
-			state.pokemonIndex = state.pokemonIndex.concat(data.pokemonIndex)
-			state.pokemons = data.pokeData
+		const verify = state.pokemons.find(
+			(element: pokemonData) => element.id === data[0].id
+		)
+		if (!verify) {
+			state.pokemons = [...state.pokemons, ...data]
 		}
+	},
+	[MutationTypes.SetNextUrl](state, url) {
+		state.nextUrl = url
 	},
 }
