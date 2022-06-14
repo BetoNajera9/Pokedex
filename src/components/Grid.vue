@@ -31,7 +31,7 @@ export default defineComponent({
       p(v-for="type in pokemon.type.types" :key="type" :class='type') {{type.charAt(0).toUpperCase() + type.slice(1)}}
 </template>
 
-<style lang="postcss" scoped>
+<style lang="postcss">
 .container {
 	@apply mx-auto;
 	@apply md:mx-0;
@@ -55,13 +55,13 @@ export default defineComponent({
 .pokemon-img {
 	@apply w-auto;
 	@apply h-auto;
-	@apply bg-light-dark;
+	@apply bg-light-high;
 	@apply rounded-md;
 }
 
 .pokemon-id {
 	@apply text-sm;
-	@apply text-dark-light;
+	@apply text-dark;
 	@apply my-2;
 }
 
@@ -83,13 +83,20 @@ export default defineComponent({
 	@apply text-center;
 }
 
-.grass {
-	@apply bg-green;
+.bug {
+	@apply bg-green-high;
+	@apply text-light;
 }
 
-.poison {
-	@apply bg-purple;
+.dragon {
 	@apply text-light;
+	@apply bg-gradient-to-t;
+	@apply from-blue;
+	@apply to-red;
+}
+
+.fairy {
+	@apply bg-pink-low;
 }
 
 .fire {
@@ -97,13 +104,43 @@ export default defineComponent({
 	@apply text-light;
 }
 
-.water {
-	@apply bg-blue;
+.ghost {
+	@apply bg-purple-high;
 	@apply text-light;
 }
 
-.bug {
-	@apply bg-green-dark;
+.ground {
+	@apply bg-gradient-to-t;
+	@apply from-yellow;
+	@apply to-yellow-high;
+	@apply text-light;
+}
+
+.normal {
+	@apply bg-dark-low;
+	@apply text-light;
+}
+
+.psychic {
+	@apply bg-pink;
+	@apply text-light;
+}
+
+.steel {
+	@apply bg-dark;
+}
+
+.dark {
+	@apply bg-dark-high;
+	@apply text-light;
+}
+
+.electric {
+	@apply bg-yellow;
+}
+
+.fighting {
+	@apply bg-orange-high;
 	@apply text-light;
 }
 
@@ -111,6 +148,28 @@ export default defineComponent({
 	@apply text-light;
 	@apply bg-gradient-to-t;
 	@apply from-blue;
-	@apply to-dark-light;
+	@apply to-dark;
+}
+
+.grass {
+	@apply bg-green;
+}
+
+.ice {
+	@apply bg-blue-low;
+}
+
+.poison {
+	@apply bg-purple;
+	@apply text-light;
+}
+
+.rock {
+	@apply bg-yellow-high;
+}
+
+.water {
+	@apply bg-blue;
+	@apply text-light;
 }
 </style>

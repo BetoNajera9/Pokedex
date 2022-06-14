@@ -18,7 +18,7 @@ section.searcher
 .searcher {
 	@apply flex;
 	@apply justify-evenly;
-	@apply bg-dark;
+	@apply bg-dark-high;
 	@apply text-light;
 }
 
@@ -43,7 +43,7 @@ section.searcher
 	@apply p-1;
 	@apply flex;
 	@apply items-center;
-	@apply text-dark;
+	@apply text-dark-high;
 }
 
 .text > input {
@@ -68,7 +68,7 @@ section.searcher
 }
 
 .info-wrapp {
-	@apply bg-green-dark;
+	@apply bg-green-high;
 	@apply text-light;
 	@apply h-[88px];
 	@apply p-4;
