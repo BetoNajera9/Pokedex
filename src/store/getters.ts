@@ -1,9 +1,9 @@
 import { GetterTree } from 'vuex'
 import { State } from './state'
-import { pokemonData } from '../types/pokemon'
+import { Pokemon } from '../services/poke-api/models'
 
 export type Getters = {
-	pokemon(state: State): pokemonData[]
+	pokemon(state: State): Pokemon[]
 	nextUrl(state: State): string
 }
 

@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex'
-import { pokemonData } from '../types/pokemon'
+import { Pokemon } from '../services/poke-api/models'
 import { State } from './state'
 
 export enum MutationTypes {
@@ -8,14 +8,14 @@ export enum MutationTypes {
 }
 
 export type Mutations = {
-	[MutationTypes.SetPokemonsData](state: State, data: pokemonData[]): void
+	[MutationTypes.SetPokemonsData](state: State, data: Pokemon[]): void
 	[MutationTypes.SetNextUrl](state: State, url: string): void
 }
 
 export const mutations: MutationTree<State> & Mutations = {
 	[MutationTypes.SetPokemonsData](state, data) {
 		const verify = state.pokemons.find(
-			(element: pokemonData) => element.id === data[0].id
+			(element: Pokemon) => element.id === data[0].id
 		)
 		if (!verify) {
 			state.pokemons = [...state.pokemons, ...data]

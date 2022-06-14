@@ -1,7 +1,7 @@
 import { ActionTree, ActionContext } from 'vuex'
 import { Mutations, MutationTypes } from './mutations'
 import { State } from './state'
-import { pokemonData } from '../types/pokemon'
+import { Pokemon } from '../services/poke-api/models'
 
 export enum ActionTypes {
 	SetPokemonsData = 'SET_POKEMONS_DATA',
@@ -18,7 +18,7 @@ type AugmentedActionContext = {
 export interface Actions {
 	[ActionTypes.SetPokemonsData](
 		{ commit }: AugmentedActionContext,
-		data: pokemonData[]
+		data: Pokemon[]
 	): void
 	[ActionTypes.SetNextUrl](
 		{ commit }: AugmentedActionContext,

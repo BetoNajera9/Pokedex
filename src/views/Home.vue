@@ -2,27 +2,28 @@
 import { defineComponent, onMounted, computed } from 'vue'
 import Searcher from '../components/Searcher.vue'
 import Grid from '../components/Grid.vue'
-import { getPokemons } from '../api'
+import PokeApi from '../services/poke-api'
 import { useStore } from '../store'
 import { ActionTypes } from '../store/actions'
 
 export default defineComponent({
 	components: { Searcher, Grid },
 	setup() {
+		const pokeApi = new PokeApi()
 		const store = useStore()
 
-		const chargeMorePokemons = async () => {
-			const pokemonData = await getPokemons(store.getters.nextUrl)
+		const fetchMorePokemons = async () => {
+			const pokemonData = await pokeApi.getPokemons(store.getters.nextUrl)
 			store.dispatch(ActionTypes.SetPokemonsData, pokemonData)
 		}
 
 		onMounted(async () => {
-			const pokemonData = await getPokemons()
+			const pokemonData = await pokeApi.getPokemons(store.getters.nextUrl)
 			store.dispatch(ActionTypes.SetPokemonsData, pokemonData)
 		})
 
 		return {
-			chargeMorePokemons,
+			fetchMorePokemons,
 			store,
 		}
 	},
@@ -35,12 +36,12 @@ section.title
 searcher
 grid(:setPokemonsData="'pokemon'")
 .charge-page-area
-	button.charge-page(@click='chargeMorePokemons') Cargar mas pokemon
+	button.charge-page(@click='fetchMorePokemons') Cargar mas pokemon
 </template>
 
 <style lang="postcss" scoped>
 .title {
-	@apply text-dark-light;
+	@apply text-dark;
 	@apply mx-40;
 	@apply py-5;
 	@apply px-10;
@@ -62,6 +63,6 @@ grid(:setPokemonsData="'pokemon'")
 	@apply text-light;
 	@apply rounded-md;
 
-	@apply active:bg-blue-dark;
+	@apply active:bg-blue-high;
 }
 </style>

@@ -1,11 +1,11 @@
-import { pokemonData } from '../types/pokemon'
+import { Pokemon } from '../services/poke-api/models/'
 
 export type State = {
-	pokemons: pokemonData[]
+	pokemons: Pokemon[]
 	nextUrl: string
 }
 
 export const state: State = {
 	pokemons: [],
-	nextUrl: '',
+	nextUrl: 'https://pokeapi.co/api/v2/pokemon?limit=12&offset=0',
 }

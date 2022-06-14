@@ -20,11 +20,11 @@ export default defineComponent({
 	setup() {
 		const isActive = ref(false)
 
-		const setActive = () => {
+		const toogleActive = () => {
 			isActive.value = !isActive.value
 		}
 
-		return { isActive, setActive }
+		return { isActive, setActive: toogleActive }
 	},
 })
 </script>
@@ -36,7 +36,7 @@ export default defineComponent({
 
 .menu {
 	@apply h-[55px];
-	@apply text-dark-light;
+	@apply text-dark;
 	@appl bg-red;
 	@apply md:hidden;
 }
@@ -82,7 +82,7 @@ li.favorites {
 
 a {
 	@apply text-base;
-	@apply text-dark-light;
+	@apply text-dark;
 	@apply flex;
 	@apply items-center;
 	@apply w-[895px];
