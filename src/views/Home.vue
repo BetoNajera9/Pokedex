@@ -17,11 +17,6 @@ export default defineComponent({
 			store.dispatch(ActionTypes.SetPokemonsData, pokemonData)
 		}
 
-		onMounted(async () => {
-			const pokemonData = await pokeApi.getPokemons(store.getters.nextUrl)
-			store.dispatch(ActionTypes.SetPokemonsData, pokemonData)
-		})
-
 		return {
 			fetchMorePokemons,
 			store,

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onBeforeMount } from 'vue'
 import { ActionTypes } from '../store/actions'
 import { useStore } from '../store'
 
@@ -23,7 +23,7 @@ export default defineComponent({
 			}
 		}
 
-		onMounted(async () => {
+		onBeforeMount(async () => {
 			const initialIsFavorite = store.getters.favoritePokemon(pokemonName)
 			isFavorite.value = !initialIsFavorite ? false : true
 		})

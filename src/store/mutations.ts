@@ -23,6 +23,7 @@ export const mutations: MutationTree<State> & Mutations = {
 		)
 		if (!verify) {
 			state.pokemons = [...state.pokemons, ...data]
+			localStorage.setItem('pokemons', JSON.stringify(state.pokemons))
 		}
 	},
 	[MutationTypes.SetNextUrl](state, url) {
@@ -30,10 +31,19 @@ export const mutations: MutationTree<State> & Mutations = {
 	},
 	[MutationTypes.SetPokemonFavorite](state, data) {
 		state.favoritePokemons.push(data)
+		localStorage.setItem(
+			'favoritePokemon',
+			JSON.stringify(state.favoritePokemons)
+		)
 	},
 	[MutationTypes.RemovePokemonFavorite](state, name) {
 		state.favoritePokemons = state.favoritePokemons.filter(
 			(element: Pokemon) => element.name !== name
+		)
+
+		localStorage.setItem(
+			'favoritePokemon',
+			JSON.stringify(state.favoritePokemons)
 		)
 	},
 }
