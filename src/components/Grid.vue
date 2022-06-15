@@ -1,8 +1,10 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from '../store'
+import PokemonImage from './PokemonImage.vue'
 
 export default defineComponent({
+	components: { PokemonImage },
 	props: ['setPokemonsData'],
 	setup(props) {
 		const { setPokemonsData } = props
@@ -22,13 +24,14 @@ export default defineComponent({
 
 <template lang="pug">
 .container
-  .card(v-for="pokemon in pokemonsData" :key="pokemon.name")
-    img.pokemon-img(:src="pokemon.img")
-    p.pokemon-id N.°{{('000' + pokemon.id).substr(-3)}}
-    strong
-      .pokemon-name {{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}}
-    .types
-      p(v-for="type in pokemon.type.types" :key="type" :class='type') {{type.charAt(0).toUpperCase() + type.slice(1)}}
+	.card(v-for="pokemon in pokemonsData" :key="pokemon.name")
+		pokemon-image.pokemon-img(:imgSrc="pokemon.img" :favorite="true" :pokemonName="pokemon.name")
+		router-link(:to="{ name: 'pokemonDetails', params: { name: pokemon.name }}")
+			p.pokemon-id N.°{{('000' + pokemon.id).substr(-3)}}
+			strong
+				.pokemon-name {{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}}
+		.types
+			p(v-for="type in pokemon.type.types" :key="type" :class='type') {{type.charAt(0).toUpperCase() + type.slice(1)}}
 </template>
 
 <style lang="postcss">

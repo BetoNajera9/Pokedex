@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, onMounted, computed } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import Searcher from '../components/Searcher.vue'
 import Grid from '../components/Grid.vue'
 import PokeApi from '../services/poke-api'
@@ -34,7 +34,7 @@ export default defineComponent({
 section.title
 	h1 Pokédex
 searcher
-grid(:setPokemonsData="'pokemon'")
+grid(:setPokemonsData="'pokemons'")
 .charge-page-area
 	button.charge-page(@click='fetchMorePokemons') Cargar mas pokemon
 </template>
