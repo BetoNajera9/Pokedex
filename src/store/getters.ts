@@ -3,15 +3,45 @@ import { State } from './state'
 import { Pokemon } from '../services/poke-api/models'
 
 export type Getters = {
-	pokemon(state: State): Pokemon[]
+	pokemons(state: State): Pokemon[]
+	pokemon(state: State): (name: string) => Pokemon
+	pokemonEvolution(state: State): (evolution_chain: string) => Pokemon[]
 	nextUrl(state: State): string
+	favoritePokemon(state: State): (name: string) => Pokemon
 }
 
 export const getters: GetterTree<State, State> & Getters = {
-	pokemon: (state) => {
+	pokemons: (state) => {
 		return state.pokemons
+	},
+	pokemon: (state) => {
+		return (name: string) => {
+			const pokemon = state.pokemons.find(
+				(element: Pokemon) => element.name === name
+			)
+			return pokemon!
+		}
+	},
+	pokemonEvolution: (state) => {
+		return (evolution_chain: string) => {
+			const pokemon = state.pokemons.filter(
+				(element: Pokemon) => element.evolution_chain === evolution_chain
+			)
+			return pokemon!
+		}
 	},
 	nextUrl: (state) => {
 		return state.nextUrl
+	},
+	favoritePokemons: (state) => {
+		return state.favoritePokemons
+	},
+	favoritePokemon: (state) => {
+		return (name: string) => {
+			const pokemon = state.favoritePokemons.find(
+				(element: Pokemon) => element.name === name
+			)
+			return pokemon!
+		}
 	},
 }

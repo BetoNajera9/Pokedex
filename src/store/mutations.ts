@@ -5,11 +5,15 @@ import { State } from './state'
 export enum MutationTypes {
 	SetPokemonsData = 'SET_POKEMONS_DATA',
 	SetNextUrl = 'SET_NEXT_URL',
+	SetPokemonFavorite = 'SET_POKEMON_FAVORITE',
+	RemovePokemonFavorite = 'REMOVE_POKEMON_FAVORITE',
 }
 
 export type Mutations = {
 	[MutationTypes.SetPokemonsData](state: State, data: Pokemon[]): void
 	[MutationTypes.SetNextUrl](state: State, url: string): void
+	[MutationTypes.SetPokemonFavorite](state: State, data: Pokemon): void
+	[MutationTypes.RemovePokemonFavorite](state: State, name: string): void
 }
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -23,5 +27,13 @@ export const mutations: MutationTree<State> & Mutations = {
 	},
 	[MutationTypes.SetNextUrl](state, url) {
 		state.nextUrl = url
+	},
+	[MutationTypes.SetPokemonFavorite](state, data) {
+		state.favoritePokemons.push(data)
+	},
+	[MutationTypes.RemovePokemonFavorite](state, name) {
+		state.favoritePokemons = state.favoritePokemons.filter(
+			(element: Pokemon) => element.name !== name
+		)
 	},
 }

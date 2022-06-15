@@ -6,6 +6,8 @@ import { Pokemon } from '../services/poke-api/models'
 export enum ActionTypes {
 	SetPokemonsData = 'SET_POKEMONS_DATA',
 	SetNextUrl = 'SET_NEXT_URL',
+	SetPokemonFavorite = 'SET_POKEMON_FAVORITE',
+	RemovePokemonFavorite = 'REMOVE_POKEMON_FAVORITE',
 }
 
 type AugmentedActionContext = {
@@ -24,6 +26,14 @@ export interface Actions {
 		{ commit }: AugmentedActionContext,
 		url: string
 	): void
+	[ActionTypes.SetPokemonFavorite](
+		{ commit }: AugmentedActionContext,
+		data: Pokemon
+	): void
+	[ActionTypes.RemovePokemonFavorite](
+		{ commit }: AugmentedActionContext,
+		data: Pokemon
+	): void
 }
 
 export const actions: ActionTree<State, State> & Actions = {
@@ -32,5 +42,11 @@ export const actions: ActionTree<State, State> & Actions = {
 	},
 	[ActionTypes.SetNextUrl]({ commit }, url) {
 		commit(MutationTypes.SetNextUrl, url)
+	},
+	[ActionTypes.SetPokemonFavorite]({ commit }, data) {
+		commit(MutationTypes.SetPokemonFavorite, data)
+	},
+	[ActionTypes.RemovePokemonFavorite]({ commit }, data) {
+		commit(MutationTypes.RemovePokemonFavorite, data)
 	},
 }
