@@ -1,9 +1,8 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import PokemonImage from '../components/PokemonImage.vue'
 import { useStore } from '../store'
-// import { ActionTypes } from '../store/actions'
 
 export default defineComponent({
 	components: { PokemonImage },
@@ -11,21 +10,21 @@ export default defineComponent({
 		const route = useRoute()
 		const store = useStore()
 
-		const pokemon = store.getters.pokemon(route.params.name as string)
-		const pokemonEvolution = store.getters.pokemonEvolution(
-			pokemon.evolution_chain
+		let pokemon = computed(() =>
+			store.getters.pokemon(route.params.name as string)
+		)
+		let pokemonEvolution = computed(() =>
+			store.getters.pokemonEvolution(pokemon.value.evolution_chain)
 		)
 
-		if (pokemonEvolution.length === 1) {
-			pokemonEvolution[0].evolution_chain = 'last'
-		} else if (pokemonEvolution.length > 2) {
-			pokemonEvolution[0].evolution_chain = 'last'
-			pokemonEvolution[1].evolution_chain = 'middle'
-			pokemonEvolution[2].evolution_chain = 'first'
-		} else {
-			pokemonEvolution[1].evolution_chain = 'last'
-			pokemonEvolution[2].evolution_chain = 'first'
-		}
+		watch(
+			() => route.params,
+			(toParams, previousParams) => {
+				pokemon = computed(() =>
+					store.getters.pokemon(route.params.name as string)
+				)
+			}
+		)
 
 		return {
 			store,
