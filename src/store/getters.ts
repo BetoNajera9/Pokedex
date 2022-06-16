@@ -5,9 +5,10 @@ import { Pokemon } from '../services/poke-api/models'
 export type Getters = {
 	pokemons(state: State): Pokemon[]
 	pokemon(state: State): (name: string) => Pokemon
+	pokemonById(state: State): (id: number) => Pokemon
 	pokemonEvolution(state: State): (evolution_chain: string) => Pokemon[]
 	nextUrl(state: State): string
-	favoritePokemon(state: State): (name: string) => Pokemon
+	favoritePokemon(state: State): (name: string) => boolean
 }
 
 export const getters: GetterTree<State, State> & Getters = {
@@ -18,6 +19,14 @@ export const getters: GetterTree<State, State> & Getters = {
 		return (name: string) => {
 			const pokemon = state.pokemons.find(
 				(element: Pokemon) => element.name === name
+			)
+			return pokemon!
+		}
+	},
+	pokemonById: (state) => {
+		return (id: number) => {
+			const pokemon = state.pokemons.find(
+				(element: Pokemon) => element.id === id
 			)
 			return pokemon!
 		}
@@ -41,7 +50,8 @@ export const getters: GetterTree<State, State> & Getters = {
 			const pokemon = state.favoritePokemons.find(
 				(element: Pokemon) => element.name === name
 			)
-			return pokemon!
+
+			return !pokemon ? false : true
 		}
 	},
 }
