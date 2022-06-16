@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, onBeforeMount } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { ActionTypes } from '../store/actions'
 import { useStore } from '../store'
 
@@ -10,7 +10,7 @@ export default defineComponent({
 
 		const store = useStore()
 
-		let isFavorite = ref(false)
+		let isFavorite = ref(store.getters.favoritePokemon(pokemonName))
 
 		const toogleFavorite = () => {
 			isFavorite.value = !isFavorite.value
@@ -22,11 +22,6 @@ export default defineComponent({
 				store.dispatch(ActionTypes.SetPokemonFavorite, pokemonData)
 			}
 		}
-
-		onBeforeMount(async () => {
-			const initialIsFavorite = store.getters.favoritePokemon(pokemonName)
-			isFavorite.value = !initialIsFavorite ? false : true
-		})
 
 		return {
 			pokemonName,
@@ -41,20 +36,20 @@ export default defineComponent({
 
 <template lang="pug">
 div
-	span(@click="toogleFavorite")
+	span.toogle-favorite(@click="toogleFavorite")
 		mdicon.btn-favorite(:class="{favorite: isFavorite}" v-show="favorite === true"  name="heart" size="25")
 	router-link(:to="{ name: 'pokemonDetails', params: { name: pokemonName }}")
 		img(:src="imgSrc")
 
 </template>
 
-<style lang="postcss" scoped>
-div span {
+<style lang="postcss">
+.toogle-favorite {
 	@apply flex;
 	@apply justify-end;
 }
 
-.favorite.mdi {
+.favorite.btn-favorite {
 	@apply text-red;
 }
 
