@@ -2,6 +2,7 @@
 import { defineComponent, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import PokemonImage from '../components/PokemonImage.vue'
+import { ActionTypes } from '../store/actions'
 import { useStore } from '../store'
 
 export default defineComponent({
@@ -16,6 +17,22 @@ export default defineComponent({
 		let pokemonEvolution = computed(() =>
 			store.getters.pokemonEvolution(pokemon.value.evolution_chain)
 		)
+		let isFavorite = computed(() =>
+			store.getters.favoritePokemon(pokemon.value.name)
+		)
+
+		const nextPokemon = computed(() => {
+			if (pokemon.value.id === store.getters.pokemons.length) {
+				return store.getters.pokemonById(1)
+			}
+			return store.getters.pokemonById(pokemon.value.id + 1)
+		})
+		const previousPokemon = computed(() => {
+			if (pokemon.value.id === 1) {
+				return store.getters.pokemonById(store.getters.pokemons.length)
+			}
+			return store.getters.pokemonById(pokemon.value.id - 1)
+		})
 
 		watch(
 			() => route.params,
@@ -26,10 +43,26 @@ export default defineComponent({
 			}
 		)
 
+		const toogleFavorite = () => {
+			if (isFavorite.value === false) {
+				const pokemonData = store.getters.pokemon(pokemon.value.name)
+				store.dispatch(ActionTypes.SetPokemonFavorite, pokemonData)
+			} else {
+				store.dispatch(ActionTypes.RemovePokemonFavorite, pokemon.value.name)
+			}
+			isFavorite = computed(() =>
+				store.getters.favoritePokemon(pokemon.value.name)
+			)
+		}
+
 		return {
 			store,
 			pokemon,
 			pokemonEvolution,
+			isFavorite,
+			toogleFavorite,
+			nextPokemon,
+			previousPokemon,
 		}
 	},
 })
@@ -37,20 +70,20 @@ export default defineComponent({
 
 <template lang="pug">
 section.pokemon-neighbors
-  router-link(to="/")
+  router-link(:to="{ name: 'pokemonDetails', params: { name: previousPokemon.name }}")
     .neighbors-wrapper
       span.neighbors_attributes.arrow
           mdicon#btn-next-neighbors(name="chevron-left" size="25")
       span.neighbors_attributes
-        p N°001
+        p N.°{{('000' + previousPokemon.id).substr(-3)}}
       span.neighbors_attributes
-        p NAME
-  router-link(to="/")
+        p {{previousPokemon.name.charAt(0).toUpperCase() + previousPokemon.name.slice(1)}}
+  router-link(:to="{ name: 'pokemonDetails', params: { name: nextPokemon.name }}")
     .neighbors-wrapper
       span.neighbors_attributes
-        p NAME
+        p {{nextPokemon.name.charAt(0).toUpperCase() + nextPokemon.name.slice(1)}}
       span.neighbors_attributes
-        p N°001
+        p N.°{{('000' + nextPokemon.id).substr(-3)}}
       span.neighbors_attributes.arrow
         mdicon#btn-last-neighbors(name="chevron-right" size="25")
   .pokemon-pagination-title
@@ -59,33 +92,36 @@ section.pokemon-neighbors
 
 section.pokemon-details
   .pokemon-rate
-    pokemon-image.pokemon-img(:imgSrc="pokemon.img" :favorite="true" :pokemonName="pokemon.name")
+    span.toogle-favorite(@click="toogleFavorite")
+      mdicon.btn-favorite(:class="{favorite: isFavorite}"  name="heart" size="30")
+    router-link(:to="{ name: 'pokemonDetails', params: { name: pokemon.name }}")
+      img(:src="pokemon.img")
     .pokemon-states
       h3 Puntos base
       div.graphic
         div.column.hp
           ul
-            li(v-for="item in pokemon.stats.hp.array" :key="item" :class="item")
+            li(v-for="(item, index) in pokemon.stats.hp.array" :key="index" :class="item")
           h2 HP
         div.column.attack
           ul
-            li(v-for="item in pokemon.stats.attack.array" :key="item" :class="item")
+            li(v-for="(item, index) in pokemon.stats.attack.array" :key="index" :class="item")
           h2 Attack
         div.column.defense
           ul
-            li(v-for="item in pokemon.stats.defense.array" :key="item" :class="item")
+            li(v-for="(item, index) in pokemon.stats.defense.array" :key="index" :class="item")
           h2 Defense
         div.column.special-attack
           ul
-            li(v-for="item in pokemon.stats['special-attack'].array" :key="item" :class="item")
+            li(v-for="(item, index) in pokemon.stats['special-attack'].array" :key="index" :class="item")
           h2 Special attack
         div.column.special-defense
           ul
-            li(v-for="item in pokemon.stats['special-defense'].array" :key="item" :class="item")
+            li(v-for="(item, index) in pokemon.stats['special-defense'].array" :key="index" :class="item")
           h2 Special defense
         div.column.speed
           ul
-            li(v-for="item in pokemon.stats.speed.array" :key="item" :class="item")
+            li(v-for="(item, index) in pokemon.stats.speed.array" :key="index" :class="item")
           h2 Speed
   .pokeomn-info
     .pokemon-description
@@ -114,12 +150,12 @@ section.pokemon-details
       div.type
         h1.ability-title Type
         .tag
-          div(v-for="type in pokemon.type.types" :key="type" :class="type")
+          div(v-for="(type, index) in pokemon.type.types" :key="index" :class="type")
             p {{type}}
       div.weakness
         h1.ability-title Weakness
         .tag
-          div(v-for="weakness in pokemon.type.weakness" :key="weakness" :class="weakness")
+          div(v-for="(weakness, index) in pokemon.type.weakness" :key="index" :class="weakness")
             p {{weakness}}
 section.pokemon-evolutions
   h1 Evolutions
@@ -199,10 +235,14 @@ section.pokemon-evolutions
 	@apply lg:mx-[20vw];
 }
 
+.pokemon-details > * {
+	@apply mx-4;
+}
+
 .pokemon-rate {
 	@apply flex;
 	@apply flex-col;
-	@apply items-center;
+	@apply items-end;
 }
 
 .pokemon-rate > * {
