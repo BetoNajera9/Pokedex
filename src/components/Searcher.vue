@@ -1,14 +1,46 @@
+<script lang="ts">
+import { defineComponent, ref, computed } from 'vue'
+import { Pokemon } from '../services/poke-api/models'
+import { useStore } from '../store'
+
+export default defineComponent({
+	setup() {
+		const store = useStore()
+		const pokemons = computed(() => store.getters.pokemons)
+		let input = ref('')
+
+		const searchedList = () => {
+			return pokemons.value.filter((pokemon: Pokemon) => {
+				if (input.value === '') return false
+
+				const pokemonString = pokemon.name.includes(input.value)
+				const pokemonNumber = pokemon.id.toString().includes(input.value)
+
+				return pokemonString || pokemonNumber
+			})
+		}
+
+		return {
+			searchedList,
+			input,
+		}
+	},
+})
+</script>
+
 <template lang="pug">
 section.searcher
   .search
     label Nombre o número
     .inputs
       span.text
-        input#search-input(type='text')
+        input#search-input(type="text" v-model="input" placeholder="Search pokemons...")
+      .list-wrapp
+        .list-pokemons(v-for="pokemon in searchedList()" :key="pokemon")
+          p N.°{{('000' + pokemon.id).substr(-3)}} - {{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}}
       span.search-btn
         mdicon#search-btn(name="magnify" size="35")
     p.subtitles ¡Usa la búsqueda avanzada para encontrar Pokémon por su tipo, debilidad, habilidad y demás datos!
-
   .info
     .info-wrapp
       h2 Busca un Pokémon por su nombre o usando su número de la Pokédex Nacional.
@@ -74,5 +106,21 @@ section.searcher
 	@apply p-4;
 	@apply rounded-lg;
 	@apply text-lg;
+}
+
+.list-wrapp {
+	@apply absolute;
+	@apply top-[278px];
+	@apply left-[197px];
+	@apply border;
+}
+
+.list-pokemons {
+	@apply z-50;
+	@apply bg-light;
+	@apply text-dark-high;
+	@apply hover:bg-blue;
+	@apply cursor-pointer;
+	@apply w-[255px];
 }
 </style>
