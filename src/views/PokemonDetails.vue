@@ -36,7 +36,7 @@ export default defineComponent({
 
 		watch(
 			() => route.params,
-			(toParams, previousParams) => {
+			() => {
 				pokemon = computed(() =>
 					store.getters.pokemon(route.params.name as string)
 				)
@@ -346,12 +346,17 @@ li.fill {
 }
 
 .pokemon-evolutions {
-	@apply h-[365px];
 	@apply opacity-80;
 	@apply bg-dark-high;
 	@apply mx-[10vw];
 	@apply lg:mx-[20vw];
 	@apply rounded-lg;
+	@apply p-5;
+}
+
+.pokemon-evolutions > h1 {
+	@apply text-light;
+	@apply text-xl;
 }
 
 .pokemon-information {
@@ -365,6 +370,9 @@ li.fill {
 
 .evolutions {
 	@apply flex;
+	@apply flex-wrap;
+	@apply gap-2;
+	@apply p-2;
 	@apply justify-evenly;
 }
 
@@ -389,6 +397,7 @@ li.fill {
 
 .card-information {
 	@apply w-[20%];
+	@apply gap-4;
 }
 
 .card-information > * {
