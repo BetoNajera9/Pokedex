@@ -1,7 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
 import { Pokemon } from './models'
-import { useStore } from '../../store'
-import { ActionTypes } from '../../store/actions'
 import { PokemonStats } from './models/pokemon-stats.model'
 
 export default class PokeApi {
@@ -15,9 +13,6 @@ export default class PokeApi {
 
 	async getPokemons(url: string) {
 		const { data: pokemonsList } = await this.client.get(url)
-
-		const store = useStore()
-		store.dispatch(ActionTypes.SetNextUrl, pokemonsList.next)
 
 		const pokeData: Pokemon[] = await Promise.all(
 			pokemonsList.results.map((element: any) => {
