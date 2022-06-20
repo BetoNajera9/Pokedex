@@ -20,9 +20,13 @@ export default defineComponent({
 					ActionTypes.SetPokemonsData,
 					JSON.parse(localStorage.pokemons)
 				)
-			} else {
-				const pokemons = await pokeApi.getPokemons(store.getters.nextUrl)
-				store.dispatch(ActionTypes.SetPokemonsData, pokemons)
+			}
+
+			if (store.getters.pokemons.length < store.getters.pokemonCount) {
+				const pokemonData = await pokeApi.getPokemons(
+					`https://pokeapi.co/api/v2/pokemon?limit=${store.getters.pokemonCount}&offset=0`
+				)
+				store.dispatch(ActionTypes.SetPokemonsData, pokemonData)
 			}
 
 			if (localStorage.favoritePokemon) {
