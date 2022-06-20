@@ -1,28 +1,25 @@
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
-import { Pokemon } from '../services/poke-api/models'
+import { defineComponent, ref, onBeforeMount } from 'vue'
 import { useStore } from '../store'
+import { ActionTypes } from '../store/actions'
 
 export default defineComponent({
 	setup() {
 		const store = useStore()
-		const pokemons = computed(() => store.getters.pokemons)
 		let input = ref('')
 
-		const searchedList = () => {
-			return pokemons.value.filter((pokemon: Pokemon) => {
-				if (input.value === '') return false
-
-				const pokemonString = pokemon.name.includes(input.value)
-				const pokemonNumber = pokemon.id.toString().includes(input.value)
-
-				return pokemonString || pokemonNumber
-			})
+		const search = () => {
+			store.dispatch(ActionTypes.SetPokemonFiltered, input.value)
+			input.value = ''
 		}
 
+		onBeforeMount(() => {
+			store.dispatch(ActionTypes.SetPokemonFiltered, '')
+		})
+
 		return {
-			searchedList,
 			input,
+			search,
 		}
 	},
 })
@@ -35,10 +32,7 @@ section.searcher
     .inputs
       span.text
         input#search-input(type="text" v-model="input" placeholder="Search pokemons...")
-      .list-wrapp
-        .list-pokemons(v-for="pokemon in searchedList()" :key="pokemon")
-          p N.°{{('000' + pokemon.id).substr(-3)}} - {{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}}
-      span.search-btn
+      span.search-btn(@click="search")
         mdicon#search-btn(name="magnify" size="35")
     p.subtitles ¡Usa la búsqueda avanzada para encontrar Pokémon por su tipo, debilidad, habilidad y demás datos!
   .info
@@ -81,6 +75,7 @@ section.searcher
 .text > input {
 	@apply h-5/6;
 	@apply w-5/6;
+	@apply px-2;
 }
 
 .search-btn {
