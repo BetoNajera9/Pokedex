@@ -2,10 +2,16 @@ import { Pokemon } from '../services/poke-api/models/'
 
 export type State = {
 	pokemons: Pokemon[]
-	nextUrl: string
+	pokemonIndex: number
+	pokemonFiltered: string
+	pokemonCount: number
+	favoritePokemons: Pokemon[]
 }
 
 export const state: State = {
 	pokemons: [],
-	nextUrl: 'https://pokeapi.co/api/v2/pokemon?limit=12&offset=0',
+	pokemonIndex: 12,
+	pokemonFiltered: '',
+	pokemonCount: 898,
+	favoritePokemons: [],
 }

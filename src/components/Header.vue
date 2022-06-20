@@ -37,7 +37,6 @@ export default defineComponent({
 .menu {
 	@apply h-[55px];
 	@apply text-dark;
-	@appl bg-red;
 	@apply md:hidden;
 }
 

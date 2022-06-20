@@ -11,6 +11,11 @@ const routes: Array<RouteRecordRaw> = [
 		name: 'favorites',
 		component: () => import('../views/Favorites.vue'),
 	},
+	{
+		path: '/pokemon/:name',
+		name: 'pokemonDetails',
+		component: () => import('../views/PokemonDetails.vue'),
+	},
 ]
 
 const router = createRouter({

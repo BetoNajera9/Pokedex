@@ -1,6 +1,12 @@
 module.exports = {
 	content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
 	theme: {
+		extend: {
+			backgroundImage: {
+				circuit: "url('/public/background.png')",
+				notch: "url('/public/notch-white.png')",
+			},
+		},
 		fontFamily: {
 			flexo: ['Flexo', 'arial', 'sans-serif'],
 		},
