@@ -1,21 +1,25 @@
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { defineComponent, onBeforeMount } from 'vue'
 import Searcher from '../components/Searcher.vue'
 import Grid from '../components/Grid.vue'
-import PokeApi from '../services/poke-api'
 import { useStore } from '../store'
 import { ActionTypes } from '../store/actions'
 
 export default defineComponent({
 	components: { Searcher, Grid },
 	setup() {
-		const pokeApi = new PokeApi()
 		const store = useStore()
 
 		const fetchMorePokemons = async () => {
-			const pokemonData = await pokeApi.getPokemons(store.getters.nextUrl)
-			store.dispatch(ActionTypes.SetPokemonsData, pokemonData)
+			store.dispatch(
+				ActionTypes.SetPokemonIndex,
+				store.getters.pokemonIndex + 12
+			)
 		}
+
+		onBeforeMount(() => {
+			store.dispatch(ActionTypes.SetPokemonIndex, 12)
+		})
 
 		return {
 			fetchMorePokemons,
@@ -29,7 +33,7 @@ export default defineComponent({
 section.title
 	h1 Pokédex
 searcher
-grid(:setPokemonsData="'pokemons'")
+grid(:setPokemonsData="'pokemonContent'")
 .charge-page-area
 	button.charge-page(@click='fetchMorePokemons') Cargar mas pokemon
 </template>
